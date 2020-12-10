@@ -1,98 +1,129 @@
-//Outside Imports
-import React, {useState, useContext} from 'react';
-import {View, StyleSheet, ScrollView, SafeAreaView} from 'react-native';
-import {Text, Button, Input} from 'react-native-elements';
-import RNPickerSelect from 'react-native-picker-select';
+import React, { Component, useState } from 'react';
+import {View, Text, StyleSheet, ScrollView, Button, Dimensions} from 'react-native';
 import axios from 'axios';
-
-// React Native Charts
 import {
     LineChart,
-    BarChart,
-    PieChart,
-    ProgressChart,
-    ContributionGraph,
-    StackedBarChart
   } from "react-native-chart-kit";
+import { color } from 'react-native-reanimated';
 
 // Font Awesome
 import { FontAwesomeIcon }  from '@fortawesome/react-native-fontawesome';
 import { faThumbsUp } from '@fortawesome/free-regular-svg-icons'; 
 
-//Local Imports
-import {Context as AuthContext} from '../context/AuthContext';
-import '../components/globals';
 
-import ToastExample from '../../android/app/src/main/java/com/secondtestproj/ToastExample';
+class DoneTrialScreen extends Component {
+    constructor(props) {
+        super(props)
+        this.state = {
+            sessions: [],
+            username: '',
+            days_list: []
+        };  
+    }
 
-//This is a nice optional insentive for users to try out the most basic portion of our app and see if they want to continue with us.
-const DoneTrialScreen = ({navigation}) => {
-    const [timeParameters, setTimeParameters] = useState('');
-    const [nickname, setNickname] = useState('')
-    const { state, signin, clearErrorMessage } = useContext(AuthContext);
+    componentDidMount() {
+        axios.get('http://screenlimit-backend-api.herokuapp.com/api/session/get_sessions_by_userId' + '5fd1a142e039950004a3f093')
+        .then(response => this.setState({ sessions: response.data }))
+        axios.post('http://screenlimit-frontend-api.herokuapp.com/get_weekly_report', {_id: '5fd1a142e039950004a3f093'})
+        .then(response => this.setState({ days_list: response.data.days_list }))
+    }
 
-    const beginTrial = async (nickname) => {
-        console.log(nickname);
-        try{
-            const trial_user = await axios.post('https://screenlimit-frontend-api.herokuapp.com/create_temp_user', {nickname});
-            if(trial_user){
-                const email = nickname
-                const password = nickname
-                signin({email, password})
-            } else {
-                console.log('Server Error.');
+    getTotalTime() {
+        var total = 0;
+        this.state.sessions.map(session => {
+            total += session.time_delta_minutes;
+        });
+        return total;
+    }
+
+
+    getMonday(){
+        var total_mins = 0;
+        this.state.sessions.map(session => {
+            if(session.day_num == 16){
+                total_mins += session.time_delta_minutes
             }
-        } catch(err) {
-            console.log(err);
-        }
+        })
+        return total_mins
     }
 
-    const resumeTrial = async (nickname) => {
-        console.log(nickname);
-        try {
-            const email = nickname
-            const password = nickname
-            signin({email, password})
-        }
-        catch(err){
-            log(err)
-        }
+    getWeekdayMins(dayNum){
+        var total_mins = 0;
+        this.state.sessions.map(session => {
+            if(session.day_num == dayNum){
+                total_mins += session.time_delta_minutes
+            }
+        })
+        return total_mins
+    }
+    
+    getTime(mins) {
+        var hours = mins / 60;
+        var newMins = mins % 60;
+        return Math.floor(hours) + 'h ' + newMins + 'm'
     }
 
 
 
-    return (
-        <SafeAreaView style={styles.mainContainer}>
-            <Text h1 style={styles.mainTitle}>Trial Complete! </Text>
+    renderSessions() {
+        return this.state.sessions.map(session => 
+            <View key={session._id} style={styles.container}>
 
-            <View style={styles.subContainer}>
-                <View style={styles.headerBox}>
-                    <View style={styles.headerIcon}>
-                        <FontAwesomeIcon icon={faThumbsUp} color='#45b6fe' style={styles.image} size={80} />
+                <View style={styles.textContainer}>
+                    <Text style={styles.blueText}>App Name: </Text>
+                    <Text style={styles.text}>{session.app_name}</Text>
+                </View>
+
+                <View style={styles.textContainer}>
+                    <Text style={styles.blueText}>Session Duration: </Text>
+                    <Text style={styles.text}>{this.getTime(session.time_delta_minutes)}</Text>
+                </View>
+
+                <View style={styles.textContainer}>
+                    <Text style={styles.blueText}>Date: </Text>
+                    <Text style={styles.h3}>{session.time_string}</Text>
+                </View>
+                
+            </View>
+        );
+    }
+    render() {
+
+        
+        return (
+            <ScrollView style={styles.main}>
+                <Text h1 style={styles.mainTitle}>Trial Complete! </Text>
+                <View style={styles.subContainer}>
+                    <View style={styles.headerBox}>
+                        <View style={styles.headerIcon}>
+                            <FontAwesomeIcon icon={faThumbsUp} color='#45b6fe' style={styles.image} size={80} />
+                        </View>
+                        <Text style={styles.headerText}>Trial Breakdown</Text>
                     </View>
-                    <Text style={styles.headerText}>Trial Breakdown</Text>
-                </View>
 
-                <View style={styles.descriptionBox}>
-                    <Text style={styles.descriptionText}>Here is a breakdown of your smartphone usage!  Do you need 
-                    <Text style={styles.descriptionTextBlue}> ScreenLimit?</Text></Text>
-                </View>
-
+        
+    
 
                 <View style={styles.chart}>
                     <LineChart
                         data={{
-                        labels: ["22", "23", "24"],
+                        labels: this.state.days_list,
                         animationEnabled: true,
                         datasets: [
                             {
                             data: [
-                                22, 23, 100
+                                this.getWeekdayMins(this.state.days_list[0]),
+                                this.getWeekdayMins(this.state.days_list[1]),
+                                this.getWeekdayMins(this.state.days_list[2]),
+                                this.getWeekdayMins(this.state.days_list[3]),
+                                this.getWeekdayMins(this.state.days_list[4]),
+                                this.getWeekdayMins(this.state.days_list[5]),
+                                this.getWeekdayMins(this.state.days_list[6]),
                             ]
                             }
                         ]
                         }}
-                        width={360} // from react-native
+                        width={Dimensions.get("window").width} // from react-native
                         height={220}
                         yAxisSuffix="m"
                         yAxisInterval={1} // optional, defaults to 1
@@ -113,34 +144,43 @@ const DoneTrialScreen = ({navigation}) => {
                         }}
                         bezier
                         style={{
+                        marginVertical: 8,
                         borderRadius: 16
                         }}
                     />
                     </View>
-                
-            </View>
-            
+                    </View>
+                    
 
-            <View>
-                <Button
-                    title = "- Return To Welcome Screen -"
-                    onPress={() => navigation.navigate('NUser')}
-                    titleStyle = {styles.linkTextDetail}
-                    type="clear"
-                />
-            </View>
 
-        </SafeAreaView>
-
-    );
-};
-
-DoneTrialScreen.navigationOptions = () => {return { headerShown: false, }; };
+                <View style={styles.mainContainer}>
+                    <Text style={styles.text}>Total time on Apps:</Text>
+                    <Text style={styles.blueText}>{this.getTime(this.getTotalTime())}</Text>
+                </View>
+                {this.renderSessions()}
+            </ScrollView>
+        )
+    }
+}
 
 const styles = StyleSheet.create({
-    mainContainer: {
-        flex: 1,
+    main: {
         backgroundColor: colorSecondary,
+        flex: 1
+    },
+    chart:{
+    },
+    mainTitle:{
+        color: colorWhite_1,
+        fontSize: 25,  
+        textAlign: 'center',
+        fontWeight: "bold",
+        fontStyle: "italic",
+    },
+    container: {
+        borderColor: colorWhite_1,
+        borderWidth: 1,
+        padding: 20,
     },
     subContainer: {
         flex: 1,
@@ -150,68 +190,13 @@ const styles = StyleSheet.create({
         marginBottom: 20,
         marginTop: 20
     },
-    chart:{
-        alignSelf: 'center',
-        marginBottom: 40
-    },
-    mainTitle:{
-        color: colorWhite_1,
-        fontSize: 25,  
-        textAlign: 'center',
-        fontWeight: "bold",
-        fontStyle: "italic",
-    },
-    descriptionBox: {
-        padding: 15,
-        borderRadius: 20,
-        marginBottom: 30,
-        marginHorizontal: 15
-    },
-    descriptionText: {
-        marginBottom: 10,
-        textAlign: 'center',
-        color: '#fff',
-        fontSize: 20
-    },
-    descriptionTextBlue: {
-        color: '#45b6fe',
-        fontSize: 20
-    },
-      headerBox:{
-          flex: 2,
-          flexDirection: 'row',
-          margin: 10
-      },
-      headerIcon: {
-          flex: 1,
-          transform: [{translateX: 30}]
-      },
-      headerText: {
+    headerText: {
         flex: 1,
         color: '#45b6fe',
         fontSize: 36,
         transform: [{translateX: -30}],
-        textAlign: 'center'
-      },
-    subTitle:{
-        color: colorWhite_1,
-        fontSize: 20,  
-        marginVertical: 20,
         textAlign: 'center',
-        fontWeight: "bold",
-        fontStyle: "normal",
-    },
-    inputTextDetail:{
-        fontSize: 25,
-        color: colorWhite_1,
-      },
-    largeTextDetail: {
-        marginTop: 20,
-        marginBottom: 10,
-        fontSize: 25,
-        textAlign: 'center',
-        fontFamily: headingFont,
-        color: colorWhite_1
+        marginLeft: 40
       },
       linkTextDetail:{
         color: '#add8e6',
@@ -225,6 +210,85 @@ const styles = StyleSheet.create({
         fontFamily: subheadingFont,
         color: colorWhite_1
       },
+    headerBox:{
+        flex: 2,
+        flexDirection: 'row',
+        alignItems: 'center',
+        margin: 10
+    },
+    mainTitle:{
+        color: colorWhite_1,
+        fontSize: 25,  
+        textAlign: 'center',
+        fontWeight: "bold",
+        fontStyle: "italic",
+    },
+    textContainer: {
+        flexDirection: 'row',
+        justifyContent: 'flex-start',
+        alignItems: 'center'
+    },
+    mainContainer: {
+        flexDirection: 'row',
+        justifyContent: 'center',
+        alignItems: 'center',
+        margin: 7
+    },
+    h1: {
+        fontSize: 30,
+        color: '#fff',
+        marginBottom: 20,
+        marginLeft: 10
+    },
+    blueh1:{
+        fontSize: 30,
+        color: '#fff',
+        marginBottom: 20,
+        marginLeft: 10,
+        color: '#26abff'
+    },
+    h2: {
+        fontSize: 25,
+        color: '#fff',
+        margin: 10,
+        textAlign: 'center',
+        textDecorationLine: 'underline'
+    },
+    h3: {
+        fontSize: 15,
+        color: '#fff',
+        margin: 10
+    },
+    text: {
+        color: '#fff',
+        fontSize: 18,
+        margin: 3
+    },
+    blueText: {
+        color: colorBlue,
+        fontSize: 18,
+        marginHorizontal: 10,
+    },
+    warning: {
+        color: 'red',
+        textAlign: 'center',
+        fontSize: 20,
+        margin: 20
+    },
+    btn: {
+        marginTop:10,
+        marginHorizontal:40 ,
+        padding: 20
+    },
+    greenText: {
+        color: 'green',
+        fontSize: 18,
+    },
+    redText: {
+        color: 'red',
+        fontSize: 18
+    }
 });
 
 export default DoneTrialScreen;
+

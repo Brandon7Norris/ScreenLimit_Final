@@ -133,18 +133,26 @@ function callBackTrialTest()
 function getTrialResponse(argument)
 {  
   if(argument == 1)
+  // 1 = Trial Running
   {
     ToastExample.printTrue();
   }
   else if(argument == 0)
+  // 0 - Trial Not Running
   {
     ToastExample.printFalse();
   }
   else if(argument == -1)
+  // -1 = Trial ended
   {
     ToastExample.printEnd();
     ToastExample.stopTrialPeriod();
   }
 }
+//TODO: TO permanently end trial, call ToastExample.stopTrailPeriod()
+
+
+
+
 
 export default LoginScreen;

@@ -1,28 +1,45 @@
 //Outside Imports
-import React from 'react';
+import React, { useState } from 'react';
 import {View, StyleSheet, ScrollView, SafeAreaView} from 'react-native';
 import {Text, Button} from 'react-native-elements';
 import { FontAwesomeIcon }  from '@fortawesome/react-native-fontawesome';
 import { faMobileAlt, faLock } from '@fortawesome/free-solid-svg-icons'; 
+
+
+
+import ToastExample from '../../android/app/src/main/java/com/secondtestproj/ToastExample';
 
 //Local Imports
 import '../components/globals';
 
 const NewUserScreen = ({navigation}) => {
 
-  const trial_status = "done"
+  const [trialStatus, setTrialStatus] = useState('new');
   // To ensure only 1 trial per smartphone
-  const smartphone_id = "1234567890"
+  const smartphone_id = "5fd1a142e039950004a3f093";
 
   // Manages User's progress through the trial
-  const trialButton = () => {
-    if(trial_status === "new") {
+
+  // TODO - Fix Double CLick Bug
+  const trialButton = async () => {
+
+    const test = await ToastExample.isTrialStillGoing(
+      (err) => {
+        console.log(err);
+      },
+      (msg) => {
+        setTrialStatus(msg)
+        console.log('Trial Status Set to : ' + msg);
+      },
+    )
+
+    if(trialStatus === 0) {
       navigation.navigate('NewTrial', {smartphone_id: smartphone_id})
     }
-    else if(trial_status === "current"){
+    else if(trialStatus === 1){
       navigation.navigate('CurrentTrial', {smartphone_id: smartphone_id})
     }
-    else if(trial_status === "done"){
+    else if(trialStatus === -1){
       navigation.navigate("DoneTrial",  {smartphone_id: smartphone_id})
     }
   }
@@ -138,7 +155,43 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     color: '#add8e6',
   },
-
 });
+
+function callBackTrialTest()
+{
+  ToastExample.isTrialStillGoing(
+    (err) => {
+      console.log(err);
+    },
+    (msg) => {
+      console.log("isTrialStillGoing " + msg);
+      getTrialResponse(msg);
+    },
+  );
+}
+
+
+function getTrialResponse(argument)
+{  
+  if(argument == 1)
+  // 1 = Trial Running
+  {
+    ToastExample.printTrue();
+  }
+  else if(argument == 0)
+  // 0 - Trial Not Running
+  {
+    ToastExample.printFalse();
+  }
+  else if(argument == -1)
+  // -1 = Trial ended
+  {
+    ToastExample.printEnd();
+    ToastExample.stopTrialPeriod();
+  }
+}
+//TODO: TO permanently end trial, call ToastExample.stopTrailPeriod()
+
+
 
 export default NewUserScreen;

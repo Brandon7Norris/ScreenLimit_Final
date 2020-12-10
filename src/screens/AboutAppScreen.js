@@ -27,28 +27,24 @@ const AboutAppScreen = ({navigation}) => {
                     <MethodExDetails
                         title="Monitor"
                         iconname="cloud"
-                        imageSource={require('../../assets/imgMonitor.png')}
                         dTitle="The Monitor Method"
                         dFull = " This is the least involved method in the Screen Limit App. When set to 'Monitor', the app will only keep track of the time you spend on the apps you've set to have watched."
                     />
                     <MethodExDetails
                         title="Guilt"
                         iconname="cloud-rain"
-                        imageSource={require('../../assets/imgGuilt.png')}
                         dTitle="The Guilt Method"
                         dFull = "This method will proceed to guilt trip the amount of time you had spent on your phone. After you spend a certain amount of time on apps, it will begin pointing out more productive things you could have been doing with your time through popups."                    
                     />
                     <MethodExDetails
                         title="Strict"
                         iconname="cloud-lightning"
-                        imageSource={require('../../assets/imgStrict.png')}
                         dTitle="The Strict Method"
                         dFull="This method is the 'cold turkey' approach. When you run out of time, the app will begin spamming popups, buzzing, and making noise until you stop using your apps."
                     />
                     <MethodExDetails
                         title="Reflection"
                         iconname="cloud-snow"
-                        imageSource={require('../../assets/imgReflection.png')}
                         dTitle="The Reflection Method"
                         dFull="This method, as the name implies, will ask you to reflect upon certain questions. After you spend a certain amount of time on an app, the app will interrupt you asking questions. Question Example: 'Is there anything important you needed to have completed soon?'"
                     />
