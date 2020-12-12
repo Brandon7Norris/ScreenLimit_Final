@@ -58,7 +58,7 @@ const NewUserScreen = ({navigation}) => {
       <View style={styles.subContainer}>
 
         <View style={styles.iconBox}>
-          <FontAwesomeIcon icon={faMobileAlt} size={270} style={styles.mainIcon} color={colorWhite_1}/>
+          <FontAwesomeIcon icon={faMobileAlt} size={200} style={styles.mainIcon} color={colorWhite_1}/>
           <FontAwesomeIcon icon={faLock} size={70} style={styles.subIcon} color='#4682b4'/>
         </View>
         

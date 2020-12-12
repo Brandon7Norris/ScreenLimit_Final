@@ -33,7 +33,7 @@ const SettingScreen = ({navigation}) => {
 
             <ScrollView style={styles.subContainer}>
 
-                <SafeAreaView style={styles.selection}>
+                {/* <SafeAreaView style={styles.selection}>
                     <Text style = {styles.subtitleTextDetail}>   Change Your Username   </Text>
                     <Input style={styles.inputTextDetail}
                         value = {urName}
@@ -103,7 +103,7 @@ const SettingScreen = ({navigation}) => {
                         onPress={() => updateUrEmail({emailNew,emailOld})}
                         buttonStyle={{ backgroundColor: '#4682b4', height:30, bottom:5 }}
                     />
-                </SafeAreaView>
+                </SafeAreaView> */}
 
                 <SafeAreaView style={styles.selection}>
                     <Text style = {styles.subtitleTextDetail}>    Change Your Watched Apps    </Text>
@@ -116,7 +116,7 @@ const SettingScreen = ({navigation}) => {
 
 
 
-                <Text style = {styles.subtitleTextDetail}>    Change Your Method    </Text>
+                {/* <Text style = {styles.subtitleTextDetail}>    Change Your Method    </Text>
                 <Text style={styles.smallTextDetail}>Select the icons for full description:</Text>
                 <SafeAreaView style={styles.mainaContainer} horizontal={true}>
                     <MethodExDetails
@@ -164,7 +164,7 @@ const SettingScreen = ({navigation}) => {
                         onPress={() => updateUrMethod({method})}
                         buttonStyle={{ backgroundColor: '#4682b4', height:30, bottom:5}}
                     />
-                </SafeAreaView>
+                </SafeAreaView> */}
             </ScrollView>
 
             <Button

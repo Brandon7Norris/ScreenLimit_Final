@@ -125,27 +125,28 @@ class AppPrepScreen extends Component {
 
         <Button
               title="30 Mins"
-              onPress={() => {ToastExample.sendTimeLeft(5000);}}
+              onPress={() => {ToastExample.sendTimeLeft(1800000);}}
             />
             
             <Button
               title="1 Hour"
-              onPress={() => {ToastExample.sendTimeLeft(10000);}}
+              onPress={() => {ToastExample.sendTimeLeft(3600000);}}
             />
 
             <Button
               title="2 Hour"
-              onPress={() => {ToastExample.sendTimeLeft(20000);}}
+              onPress={() => {ToastExample.sendTimeLeft(7200000);}}
             />
 
             <Button
               title="3 Hour"
-              onPress={() => {ToastExample.sendTimeLeft(30000);}}
+              onPress={() => {ToastExample.sendTimeLeft(10800000);}}
             />
 
             <Button
               title="4 Hour"
-              onPress={() => {ToastExample.sendTimeLeft(40000);}}
+              //onPress={() => {ToastExample.sendTimeLeft(40000);}}
+              onPress={() => {ToastExample.sendTimeLeft(14400000);}}
             />
         </ScrollView>
 

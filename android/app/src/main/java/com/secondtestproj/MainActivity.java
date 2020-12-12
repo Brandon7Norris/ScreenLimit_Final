@@ -74,7 +74,7 @@ in build.gradle
 //public class MainActivity extends AppCompatActivity {
 public class MainActivity extends ReactActivity {
 
-  //private static TimeLeftReceiver timeLeftReceiver;// = new TimeLeftReceiver(getApplicationContext());
+  private static TimeLeftReceiver timeLeftReceiver;// = new TimeLeftReceiver(getApplicationContext());
 
   private Button button;
 
@@ -221,29 +221,13 @@ public void giveAlarmString(String p)
       //SharedPreferences pref = getSharedPreferences("MyPref", Context.MODE_PRIVATE);
       //pref.edit().clear().commit();
 
-        //timeLeftReceiver = new TimeLeftReceiver(getApplicationContext());
 
-        //Intent intent = new Intent("my.action.saveTimeLeft");
-        //Intent intent = new Intent();
-        //intent.setAction("my.action.saveTimeLeft");
-        //intent.putExtra("extra", timeLeft);
-        //intent.putExtra("extra", Long.toString(-70));
-        //ComponentName componentName = new ComponentName(getApplicationContext(), TimeLeftReceiver.class);
-        //intent.setComponent(componentName);
 
 
         //Intent intent = new Intent(this, TimeLeftReceiver.class);
-        //sendBroadcast(intent);
-
-
+          
       Toast.makeText(getApplicationContext(), "", 
       Toast.LENGTH_LONG).show();   
-      Toast.makeText(getApplicationContext(), "", 
-      Toast.LENGTH_LONG).show();   
-
-
-      
-
 
       //checkIfNewDay();
 
@@ -333,6 +317,8 @@ public void giveAlarmString(String p)
 
       //myService.setMainActivity(this);
 
+
+
   }
 
   @Override
@@ -348,19 +334,19 @@ public void giveAlarmString(String p)
 
     if(fileManager.isDateLastWrittenWritten())
     {
-      Toast.makeText(getApplicationContext(), "DateWritten ", Toast.LENGTH_LONG).show();   
+      //Toast.makeText(getApplicationContext(), "DateWritten ", Toast.LENGTH_LONG).show();   
 
       long timeSinceLastReset = System.currentTimeMillis() - fileManager.readDateLastWritten();
 
       //if(timeSinceLastReset > 180000) //3 minutes in milliseconds
-      if(timeSinceLastReset > 600000) //10 minutes in milliseconds
-      //if(timeSinceLastReset > 86400000) //1 day. 24 hr * 60 min * 60 sec * 1000 millisecs
+      //if(timeSinceLastReset > 600000) //10 minutes in milliseconds
+      if(timeSinceLastReset > 86400000) //1 day. 24 hr * 60 min * 60 sec * 1000 millisecs
       //if()
       {
-        Toast.makeText(getApplicationContext(), "Over 24h ", Toast.LENGTH_LONG).show();   
+        Toast.makeText(getApplicationContext(), "New day. Resetting Time ", Toast.LENGTH_LONG).show();   
         if(fileManager.isUserSetTimeWritten())
         {
-          Toast.makeText(getApplicationContext(), "UserSetTime IS written", Toast.LENGTH_LONG).show();   
+          //Toast.makeText(getApplicationContext(), "UserSetTime IS written", Toast.LENGTH_LONG).show();   
           broadcastTimeLeft(Long.toString(fileManager.readUserSetTime()));
 
           fileManager.writeDateLastWritten(System.currentTimeMillis());
@@ -372,7 +358,7 @@ public void giveAlarmString(String p)
       }
       else
       {
-        Toast.makeText(getApplicationContext(), "Not over 24h", Toast.LENGTH_LONG).show();   
+        //Toast.makeText(getApplicationContext(), "Not over 24h", Toast.LENGTH_LONG).show();   
       }
     }
     else
@@ -405,6 +391,19 @@ public void giveAlarmString(String p)
 
   public int isTrialStillGoing()
   {
+    /*
+    timeLeftReceiver = new TimeLeftReceiver(getApplicationContext());
+
+    Intent intent = new Intent("my.action.saveTimeLeft");
+
+    //intent.putExtra("extra", Long.toString(-70));
+    ComponentName componentName = new ComponentName(getApplicationContext(), TimeLeftReceiver.class);
+    intent.setComponent(componentName);
+    sendBroadcast(intent);
+    */
+
+    //Toast.makeText(getApplicationContext(), "after broadcast ", Toast.LENGTH_LONG).show();   
+
     FileManager fileManager = new FileManager(getApplicationContext());
 
     if(fileManager.isTrialStartWritten())
@@ -418,8 +417,8 @@ public void giveAlarmString(String p)
       {
         long trialLength = System.currentTimeMillis() - trialStart;
 
-        if(trialLength < 180000) //this is 3 minutes in milliseconds
-        //if(trialLength > 1209600000)//this is 2 weeks in milliseconds
+        //if(trialLength < 180000) //this is 3 minutes in milliseconds
+        if(trialLength < 1209600000)//this is 2 weeks in milliseconds
         {                             //14days*24hours*60mins*60secs*1000millis
           return 1;
         }
@@ -497,7 +496,7 @@ public void giveAlarmString(String p)
     Intent i = new Intent(this, YourService.class);
     stopService(i);
 
-    Toast.makeText(getApplicationContext(), "isBound " + isBound, Toast.LENGTH_LONG).show();   
+    Toast.makeText(getApplicationContext(), "Stopping App", Toast.LENGTH_LONG).show();   
 
     Intent intent = new Intent("my.action.stopChecker");
     intent.putExtra("extra", "stop");
@@ -630,7 +629,7 @@ public void giveAlarmString(String p)
 
     sendBroadcast(intent);
 
-    Toast.makeText(getApplicationContext(), "sendUpAlarmPackage" + combinedStr, Toast.LENGTH_LONG).show();
+    //Toast.makeText(getApplicationContext(), "sendUpAlarmPackage" + combinedStr, Toast.LENGTH_LONG).show();
   }
 
   public String getListOfApps()

@@ -53,7 +53,7 @@ public class TimeSlice
     public void checkIfIShouldSendTimeSlice(String currentApp, long deltaTime, Context context)
     {
         handler = new Handler(context.getMainLooper());
-        Toast.makeText(context, "1In POST " + lastApp + " " + currentApp, Toast.LENGTH_LONG).show();
+        //Toast.makeText(context, "1In POST " + lastApp + " " + currentApp, Toast.LENGTH_LONG).show();
         if(userID.equals("not assigned") == false)
         {
             //Toast.makeText(context, "Testing before POST @ Check", Toast.LENGTH_LONG).show();
@@ -63,9 +63,10 @@ public class TimeSlice
                 userID = getFromFile();
             }
             */
+            
             if ((lastApp.equals("not assigned")) || (lastApp == null))
             {
-                Toast.makeText(context, "In CHECK1 " + lastApp + " " + currentApp, Toast.LENGTH_LONG).show();
+                //Toast.makeText(context, "In CHECK1 " + lastApp + " " + currentApp, Toast.LENGTH_LONG).show();
             
                 lastApp = currentApp;
                 timeSlice = deltaTime;
@@ -75,7 +76,7 @@ public class TimeSlice
 
             else if (!(lastApp.equals(currentApp)))
             {
-                Toast.makeText(context, "In CHECK2 " + lastApp + " " + currentApp, Toast.LENGTH_LONG).show();
+                //Toast.makeText(context, "In CHECK2 " + lastApp + " " + currentApp, Toast.LENGTH_LONG).show();
             
                 //postSession(userID, currentApp.appName, currentApp.appType, timeSlice);
                 
@@ -92,7 +93,7 @@ public class TimeSlice
 
             else
             {
-                Toast.makeText(context, "In CHECK3 " + lastApp + " " + currentApp, Toast.LENGTH_LONG).show();
+                //Toast.makeText(context, "In CHECK3 " + lastApp + " " + currentApp, Toast.LENGTH_LONG).show();
             
                 timeSlice += deltaTime; 
 
@@ -110,7 +111,7 @@ public class TimeSlice
                 }
             }
             
-            Toast.makeText(context, "2In POST " + lastApp + " " + currentApp, Toast.LENGTH_LONG).show();
+            //Toast.makeText(context, "2In POST " + lastApp + " " + currentApp, Toast.LENGTH_LONG).show();
         }
         else
         {Toast.makeText(context, "userID no send val ", Toast.LENGTH_LONG).show();}
@@ -152,7 +153,7 @@ public class TimeSlice
                 .build();
         //Response response = client.newCall(request).execute();
         //Log.wtf("Response", response.body().string());
-        Toast.makeText(context, "Testing before POST", Toast.LENGTH_LONG).show();
+        //Toast.makeText(context, "Testing before POST", Toast.LENGTH_LONG).show();
 
 
         // POST TO BACKEND LINE IS HERE
@@ -186,7 +187,7 @@ public class TimeSlice
                             //mTextViewResult.setText(myResponse);
                         }
                     });*/
-                    Toast.makeText(context, "POST Launched Successfully", Toast.LENGTH_LONG).show();
+                    //Toast.makeText(context, "POST Launched Successfully", Toast.LENGTH_LONG).show();
             //    }
           //  }
         //});
@@ -221,7 +222,7 @@ public class TimeSlice
                     public void run() {
                         //Handle UI here                        
                         //happy on Response Toast here   
-                        Toast.makeText(context, "POST Launched Successfully", Toast.LENGTH_LONG).show();
+                        //Toast.makeText(context, "POST Launched Successfully", Toast.LENGTH_LONG).show();
                     }
                 });
             }

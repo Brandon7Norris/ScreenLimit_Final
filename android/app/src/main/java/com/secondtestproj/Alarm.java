@@ -80,10 +80,10 @@ public class Alarm extends BroadcastReceiver
 
                         oldTime = System.currentTimeMillis();
 
-                        if (timeDiff > 60000)
+                        if (timeDiff > 300000)
                         {
-                            timeLeft -= 60000;
-                            timeDiff = 60000;
+                            timeLeft -= 300000;
+                            timeDiff = 300000;
                         }
                         else
                         {timeLeft -= timeDiff;}
@@ -99,22 +99,23 @@ public class Alarm extends BroadcastReceiver
                             Toast.makeText(context, "no time left ", Toast.LENGTH_LONG).show();
 
                             doMethod(context);
-
                         }
                         else
-                        {Toast.makeText(context, "timeLeft " + timeLeft, Toast.LENGTH_LONG).show();}
+                        {
+                            //Toast.makeText(context, "timeLeft " + timeLeft, Toast.LENGTH_LONG).show();
+                        }
 
                     }
 
                 } 
                 else 
                 {
-                    Toast.makeText(context, "app not in table ", Toast.LENGTH_LONG).show();
+                    //Toast.makeText(context, "app not in table ", Toast.LENGTH_LONG).show();
                 }
             }
             else
             {
-                Toast.makeText(context, "app hash table has no keys", Toast.LENGTH_LONG).show();
+                Toast.makeText(context, "Please reselect your apps", Toast.LENGTH_LONG).show();
             }
 
         }
@@ -147,36 +148,37 @@ public class Alarm extends BroadcastReceiver
     {
         if(userMethod == -1) //userMethod was not preserved
         {
-
-                Toast.makeText(context, "userMethod not saved", Toast.LENGTH_LONG).show();
+                Toast.makeText(context, "Please select a user method", Toast.LENGTH_LONG).show();
         }
+        else
+        {
+            switch (userMethod) {
+                case 0:  
+                    MethodStrict methodStrict = new MethodStrict();
+                    methodStrict.harassUser(context);
+                    break;
+                case 1:  
+                    MethodGuilt methodGuilt = new MethodGuilt();
+                    methodGuilt.printRandomGuiltMsg(context);
 
-        switch (userMethod) {
-            case 0:  
-                MethodStrict methodStrict = new MethodStrict();
-                methodStrict.harassUser(context);
-                break;
-            case 1:  
-                MethodGuilt methodGuilt = new MethodGuilt();
-                methodGuilt.printRandomGuiltMsg(context);
+                    //timeLeft = 600000;
+                    //fileManager.writeTimeLeft(timeLeft);
+                    //fileManager.writeUserSetTime(timeLeft);
 
-                //timeLeft = 600000;
-                //fileManager.writeTimeLeft(timeLeft);
-                //fileManager.writeUserSetTime(timeLeft);
+                    break;
+                case 2:  
+                    MethodReflect methodReflect = new MethodReflect();
+                    methodReflect.printReflectMessage(context);
 
-                break;
-            case 2:  
-                MethodReflect methodReflect = new MethodReflect();
-                methodReflect.printReflectMessage(context);
+                    //timeLeft = 600000;
+                    //fileManager.writeTimeLeft(timeLeft);
+                    //fileManager.writeUserSetTime(timeLeft);
 
-                timeLeft = 600000;
-                //fileManager.writeTimeLeft(timeLeft);
-                //fileManager.writeUserSetTime(timeLeft);
-
-                break;
-            case 3:  
-            
-                break;
+                    break;
+                case 3:  
+                
+                    break;
+            }
         }
 
 
@@ -214,7 +216,7 @@ public class Alarm extends BroadcastReceiver
     {
         proceedFurther = true;
 
-        Toast.makeText(context, "in onReceive5", Toast.LENGTH_LONG).show();
+        //Toast.makeText(context, "in onReceive5", Toast.LENGTH_LONG).show();
 
         //Log.d("alarmR", "alarm0");
 
@@ -299,7 +301,7 @@ public class Alarm extends BroadcastReceiver
 
                             appHashTable.putAppsInTable(hold);
 
-                            Toast.makeText(context, "appString: " + hold, Toast.LENGTH_LONG).show();
+                            //Toast.makeText(context, "appString: " + hold, Toast.LENGTH_LONG).show();
                         }
 
                     
@@ -311,7 +313,7 @@ public class Alarm extends BroadcastReceiver
 
                             //fileManager.writeUserMethod(userMethod);
 
-                            Toast.makeText(context, "appMode: " + userMethod, Toast.LENGTH_LONG).show();
+                            //Toast.makeText(context, "appMode: " + userMethod, Toast.LENGTH_LONG).show();
                         }
 
                         if(action.equals("my.action.timeLeft"))
@@ -322,7 +324,7 @@ public class Alarm extends BroadcastReceiver
                             //fileManager.writeTimeLeft(timeLeft);
                             //fileManager.writeUserSetTime(timeLeft);
 
-                            Toast.makeText(context, "timeLeft sent: " + timeLeft, Toast.LENGTH_LONG).show();
+                            //Toast.makeText(context, "timeLeft sent: " + timeLeft, Toast.LENGTH_LONG).show();
                         }
 
                         if(action.equals("my.action.userID"))
@@ -333,7 +335,7 @@ public class Alarm extends BroadcastReceiver
                             //TimeSlice timeSlice = new TimeSlice();        
                             timeSlice.setUserID(hold);                                               
 
-                            Toast.makeText(context, "userID: " + hold, Toast.LENGTH_LONG).show();
+                            //Toast.makeText(context, "userID: " + hold, Toast.LENGTH_LONG).show();
                         }
 
                         if(action.equals("my.action.guilt1"))
@@ -346,7 +348,7 @@ public class Alarm extends BroadcastReceiver
 
                             //fileManager.writeGuiltMessage1(msg);
 
-                            Toast.makeText(context, "guilt1: " + msg, Toast.LENGTH_LONG).show();
+                            //Toast.makeText(context, "guilt1: " + msg, Toast.LENGTH_LONG).show();
                         }
                         
                         if(action.equals("my.action.guilt2"))
@@ -359,7 +361,7 @@ public class Alarm extends BroadcastReceiver
 
                             //fileManager.writeGuiltMessage2(msg);
 
-                            Toast.makeText(context, "guilt2: " + msg, Toast.LENGTH_LONG).show();
+                            //Toast.makeText(context, "guilt2: " + msg, Toast.LENGTH_LONG).show();
                         }
 
                         if(action.equals("my.action.guilt3"))
@@ -372,13 +374,13 @@ public class Alarm extends BroadcastReceiver
 
                             //fileManager.writeGuiltMessage3(msg);
 
-                            Toast.makeText(context, "guilt3: " + msg, Toast.LENGTH_LONG).show();
+                            //Toast.makeText(context, "guilt3: " + msg, Toast.LENGTH_LONG).show();
                         }
 
                         if(action.equals("my.action.stopChecker"))
                         {            
                             proceedFurther = false;
-                            Toast.makeText(context, "stopping checker", Toast.LENGTH_LONG).show();
+                            Toast.makeText(context, "Stopping checker", Toast.LENGTH_LONG).show();
                             cancelAlarm(context);
                         }
 
@@ -406,7 +408,11 @@ public class Alarm extends BroadcastReceiver
             }
         }
         else
-        {Toast.makeText(context, "didn'tEnter", Toast.LENGTH_LONG).show();}
+        {
+            Toast.makeText(context, "Your phone is not compatable with this app", Toast.LENGTH_LONG).show();
+            Toast.makeText(context, "This app requires Android 9/Pie to run", Toast.LENGTH_LONG).show();
+            //cancelAlarm(context);
+        }
 
         Log.d("alarm2", "alarm2");
          // For example
@@ -428,8 +434,6 @@ public class Alarm extends BroadcastReceiver
         PendingIntent pi = PendingIntent.getBroadcast(context, 0, i, 0);
         //am.setRepeating(AlarmManager.RTC_WAKEUP, System.currentTimeMillis(), 5, pi); // Millisec * Second * Minute
         am.setInexactRepeating(AlarmManager.RTC_WAKEUP, System.currentTimeMillis(), 20, pi);
-
-        
     }
 
     public void cancelAlarm(Context context)
